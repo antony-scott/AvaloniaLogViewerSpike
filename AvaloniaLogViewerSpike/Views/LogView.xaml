@@ -1,0 +1,40 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
+             x:Class="AvaloniaLogViewerSpike.Views.LogView">
+  <Grid RowDefinitions="*" ColumnDefinitions="*">
+    <ListBox Grid.Row="0" Grid.Column="0"
+             Name="LogEntries"
+             Items="{Binding LogEntries}"
+             VirtualizationMode="Simple"
+             ScrollViewer.VerticalScrollBarVisibility="Visible">
+      <!--<ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <VirtualizingStackPanel VerticalAlignment="Top" />
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>-->
+      <!--<ListBox.Template>
+        <ControlTemplate>
+          <ScrollViewer Name="scroller">
+            <ItemsPresenter Name="itemsPresenter" />
+          </ScrollViewer>
+        </ControlTemplate>
+      </ListBox.Template>-->
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding Timestamp}" Margin="5,0,25,0" />
+            <TextBlock Text="{Binding Severity}" Margin="5,0,25,0" />
+            <TextBlock Text="{Binding Message}" Margin="5,0,25,0" />
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    
+  
+  
+  
+  </ListBox>
+  </Grid>
+</UserControl>
