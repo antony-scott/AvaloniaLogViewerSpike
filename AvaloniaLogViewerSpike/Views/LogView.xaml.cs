@@ -27,17 +27,14 @@ namespace AvaloniaLogViewerSpike.Views
                     .Where(x => x > 0)
                     .Throttle(TimeSpan.FromMilliseconds(10))
                     .Select(x => x - 1)
+                    .ObserveOn(RxApp.MainThreadScheduler)
                     .Subscribe(index =>
                     {
-                        Dispatcher.UIThread.Post(() =>
+                        var item = ViewModel.LogEntries.ElementAt(index);
+                        if (item != null)
                         {
-                            var item = ViewModel.LogEntries.ElementAt(index);
-                            if (item != null)
-                            {
-                                _listbox.ScrollIntoView(item);
-                            }
-                        },
-                        DispatcherPriority.DataBind);
+                            _listbox.ScrollIntoView(item);
+                        }
                     })
                     .DisposeWith(disposables);
             });
