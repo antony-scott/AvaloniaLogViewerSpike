@@ -2,6 +2,7 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using AvaloniaLogViewerSpike.ViewModels;
+using Dock.Model;
 
 namespace AvaloniaLogViewerSpike
 {
@@ -26,7 +27,7 @@ namespace AvaloniaLogViewerSpike
 
         public bool Match(object data)
         {
-            return data is ViewModelBase;
+            return data is ViewModelBase || data is IDockable;
         }
     }
 }

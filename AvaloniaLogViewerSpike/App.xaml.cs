@@ -1,8 +1,10 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using AvaloniaLogViewerSpike.Models;
 using AvaloniaLogViewerSpike.ViewModels;
 using AvaloniaLogViewerSpike.Views;
+using Dock.Model;
 
 namespace AvaloniaLogViewerSpike
 {
@@ -15,14 +17,41 @@ namespace AvaloniaLogViewerSpike
 
         public override void OnFrameworkInitializationCompleted()
         {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            var factory = new DockFactory(new LogViewerSpikeData());
+            var layout = factory.CreateLayout();
+            factory.InitLayout(layout);
+
+            var mainWindowViewModel = new MainWindowViewModel
             {
-                desktop.MainWindow = new MainWindow
+                Factory = factory,
+                Layout = layout
+            };
+
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            {
+                var mainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    DataContext = mainWindowViewModel
+                };
+
+                mainWindow.Closing += (sender, e) =>
+                {
+                    if (layout is IDock dock)
+                    {
+                        dock.Close();
+                    }
+                };
+
+                desktopLifetime.MainWindow = mainWindow;
+
+                desktopLifetime.Exit += (sender, e) =>
+                {
+                    if (layout is IDock dock)
+                    {
+                        dock.Close();
+                    }
                 };
             }
-
             base.OnFrameworkInitializationCompleted();
         }
     }

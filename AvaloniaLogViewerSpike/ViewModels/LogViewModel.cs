@@ -1,6 +1,6 @@
-﻿using Avalonia.Threading;
-using AvaloniaLogViewerSpike.Messages;
+﻿using AvaloniaLogViewerSpike.Messages;
 using AvaloniaLogViewerSpike.Models;
+using Dock.Model.Controls;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
@@ -8,7 +8,7 @@ using System.Reactive.Linq;
 
 namespace AvaloniaLogViewerSpike.ViewModels
 {
-    public class LogViewModel : ViewModelBase
+    public class LogViewModel : Document
     {
         private readonly string _name;
 
@@ -36,8 +36,8 @@ namespace AvaloniaLogViewerSpike.ViewModels
                         .ToObservable()
                         .ObserveOn(RxApp.MainThreadScheduler);
 
-                    observableToo = observableToo
-                        .Where(x => x.Severity == "Debug");
+                    //observableToo = observableToo
+                    //    .Where(x => x.Severity == "Debug");
 
                     observableToo
                         .Subscribe(logEntry =>

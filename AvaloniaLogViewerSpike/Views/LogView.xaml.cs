@@ -5,7 +5,6 @@ using System.Reactive.Linq;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
-using Avalonia.Threading;
 using AvaloniaLogViewerSpike.ViewModels;
 using ReactiveUI;
 
