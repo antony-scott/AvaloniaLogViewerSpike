@@ -143,8 +143,6 @@ namespace AvaloniaLogViewerSpike.Services
                     .OrderByDescending(x => x.LastWriteTime)
                     .FirstOrDefault();
 
-            //IoC.Get<IActivityLogger>().Log(LogLevel.Debug, $"GetLogFile: logfile = {logfile}");
-
             return logfile;
         }
 
@@ -152,25 +150,21 @@ namespace AvaloniaLogViewerSpike.Services
         {
             if (logFile == null)
             {
-                //IoC.Get<IActivityLogger>().Log(LogLevel.Debug, "HasNewLogData: logFile is null, returning TRUE");
                 return true;
             }
 
             if (logFile.FullName != LogFilename)
             {
-                //IoC.Get<IActivityLogger>().Log(LogLevel.Debug, "HasNewLogData: different file, returning TRUE");
                 return true;
             }
 
             if (logFile.LastWriteTime != _lastWriteTime)
             {
-                //IoC.Get<IActivityLogger>().Log(LogLevel.Debug, "HasNewLogData: LastWriteTime is more recent, returning TRUE");
                 return true;
             }
 
             if (logFile.Length != _previousSize)
             {
-                //IoC.Get<IActivityLogger>().Log(LogLevel.Debug, "HasNewLogData: logFile filesize is different, returning TRUE");
                 return true;
             }
 
@@ -246,4 +240,3 @@ namespace AvaloniaLogViewerSpike.Services
 
     }
 }
-

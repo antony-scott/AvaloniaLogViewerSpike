@@ -1,8 +1,6 @@
 ﻿using AvaloniaLogViewerSpike.Services;
-using ReactiveUI;
 using System;
 using System.IO;
-using System.Reactive;
 
 namespace AvaloniaLogViewerSpike.ViewModels
 {
@@ -12,26 +10,9 @@ namespace AvaloniaLogViewerSpike.ViewModels
         public LogFileMonitorService LogFileMonitorService { get; } = new LogFileMonitorService();
         public LogViewModel LogViewModel { get; }
 
-        //public ObservableCollection<LogEntryModel> LogEntries { get; }
-
         public MainWindowViewModel()
         {
             LogViewModel = new LogViewModel();
-            //LogEntries = new ObservableCollection<LogEntryModel>();
-
-            //MessageBus
-            //    .Current
-            //    .Listen<LogEntriesMessage>()
-            //    .Subscribe(x =>
-            //    {
-            //        Dispatcher.UIThread.Post(() =>
-            //        {
-            //            foreach (var log in x.LogEntries)
-            //            {
-            //                LogEntries.Add(log);
-            //            }
-            //        });
-            //    });
 
             if (File.Exists(_filename))
             {
