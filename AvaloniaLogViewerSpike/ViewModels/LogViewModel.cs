@@ -29,22 +29,21 @@ namespace AvaloniaLogViewerSpike.ViewModels
             }
 
             observable
-                .Subscribe(x =>
+                .Subscribe(logEntriesMessage =>
                 {
-                    //x.LogEntries.ToObservable();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        if (x.LogEntries != null)
+                    var observableToo = logEntriesMessage
+                        .LogEntries
+                        .ToObservable()
+                        .ObserveOn(RxApp.MainThreadScheduler);
+
+                    observableToo = observableToo
+                        .Where(x => x.Severity == "Debug");
+
+                    observableToo
+                        .Subscribe(logEntry =>
                         {
-                            foreach (var log in x.LogEntries)
-                            {
-                                if (log != null)
-                                {
-                                    LogEntries.Add(log);
-                                }
-                            }
-                        }
-                    });
+                            LogEntries.Add(logEntry);
+                        });
                 });
         }
     }

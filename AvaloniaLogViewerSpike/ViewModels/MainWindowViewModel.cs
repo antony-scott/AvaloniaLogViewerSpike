@@ -9,8 +9,12 @@ namespace AvaloniaLogViewerSpike.ViewModels
 
         public MainWindowViewModel()
         {
-            LogFileMonitorService.AddMonitor("Log1", @"D:\logfile.log.txt");
-            LogViewModel = new LogViewModel("Log1");
+            LogFileMonitorService.AddMonitor("Log1", @"D:\log1\log1.txt");
+            LogFileMonitorService.AddMonitor("Log2", @"D:\log2\log2.txt");
+
+            LogViewModel = new LogViewModel(
+                "Log1"
+                );
         }
     }
 }
