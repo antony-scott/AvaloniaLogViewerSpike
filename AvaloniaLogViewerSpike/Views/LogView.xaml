@@ -9,19 +9,8 @@
              Name="LogEntries"
              Items="{Binding LogEntries}"
              VirtualizationMode="Simple"
-             ScrollViewer.VerticalScrollBarVisibility="Visible">
-      <!--<ListBox.ItemsPanel>
-        <ItemsPanelTemplate>
-          <VirtualizingStackPanel VerticalAlignment="Top" />
-        </ItemsPanelTemplate>
-      </ListBox.ItemsPanel>-->
-      <!--<ListBox.Template>
-        <ControlTemplate>
-          <ScrollViewer Name="scroller">
-            <ItemsPresenter Name="itemsPresenter" />
-          </ScrollViewer>
-        </ControlTemplate>
-      </ListBox.Template>-->
+             ScrollViewer.VerticalScrollBarVisibility="Auto"
+             ScrollViewer.HorizontalScrollBarVisibility="Auto">
       <ListBox.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal">
