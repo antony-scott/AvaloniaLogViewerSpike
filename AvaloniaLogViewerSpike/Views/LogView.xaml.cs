@@ -1,56 +1,46 @@
 ﻿using System;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
+using Avalonia.Threading;
 using AvaloniaLogViewerSpike.ViewModels;
+using ReactiveUI;
 
 namespace AvaloniaLogViewerSpike.Views
 {
     public class LogView : ReactiveUserControl<LogViewModel>
     {
-        private CompositeDisposable _disposables = new CompositeDisposable();
-        private CompositeDisposable _scrollViewerDisposables;
-
-        //private readonly ListBox _listBox;
+        private readonly ListBox _listbox;
 
         public LogView()
         {
-            this.InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
             AvaloniaXamlLoader.Load(this);
 
-            var control = this.FindControl<ListBox>("LogEntries");
-            control.GetObservable(ListBox.ScrollProperty)
-                .OfType<ScrollViewer>()
-                .Take(1)
-                .Subscribe(sv =>
-                {
-                    _scrollViewerDisposables?.Dispose();
-                    _scrollViewerDisposables = new CompositeDisposable();
-
-                    sv
-                        .GetObservable(ScrollViewer.VerticalScrollBarMaximumProperty)
-                        .Subscribe(max =>
+            _listbox = this.FindControl<ListBox>("LogEntries");
+            this.WhenActivated(disposables =>
+            {
+                var itemsChanged = _listbox
+                    .WhenAnyValue(lb => lb.ItemCount)
+                    .Where(x => x > 0)
+                    .Throttle(TimeSpan.FromMilliseconds(10))
+                    .Select(x => x - 1)
+                    .Subscribe(index =>
+                    {
+                        Dispatcher.UIThread.Post(() =>
                         {
-                            //sv.Offset = sv.Offset.WithY(max);
-                        })
-                        .DisposeWith(_scrollViewerDisposables);
-                })
-                .DisposeWith(_disposables);
-
-            //var scrollViewer = this.FindControl<ScrollViewer>("scroller");
-            //scrollViewer.GetObservable(ScrollViewer.VerticalScrollBarMaximumProperty)
-            //    .Take(1)
-            //    .Subscribe(max =>
-            //    {
-            //        scrollViewer.Offset = scrollViewer.Offset.WithY(max);
-            //    });
+                            var item = ViewModel.LogEntries.ElementAt(index);
+                            if (item != null)
+                            {
+                                _listbox.ScrollIntoView(item);
+                            }
+                        },
+                        DispatcherPriority.DataBind);
+                    })
+                    .DisposeWith(disposables);
+            });
         }
     }
 }
