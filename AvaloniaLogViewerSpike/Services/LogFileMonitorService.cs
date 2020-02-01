@@ -14,7 +14,7 @@ namespace AvaloniaLogViewerSpike.Services
     {
         void Clear();
         bool IsFileBeingMonitored(string filename);
-        void AddFile(Guid identifier, string filename);
+        Guid AddMonitor(string name, string filename);
         void GetPreviousLogs(int numberOfLines);
     }
 
@@ -36,10 +36,12 @@ namespace AvaloniaLogViewerSpike.Services
             return _monitors.Any(x => x.LogFilename == filename);
         }
 
-        public void AddFile(Guid identifier, string filename)
+        public Guid AddMonitor(string name, string filename)
         {
-            var monitor = LogFileMonitor.Create(identifier, filename, WatcherOnChangedOrCreated);
+            var identifier = Guid.NewGuid();
+            var monitor = LogFileMonitor.Create(name, identifier, filename, WatcherOnChangedOrCreated);
             _monitors.Add(monitor);
+            return identifier;
         }
 
         public void GetPreviousLogs(int numberOfLines)
@@ -62,7 +64,10 @@ namespace AvaloniaLogViewerSpike.Services
 
             MessageBus
                 .Current
-                .SendMessage(new LogEntriesMessage(monitor.Identifier,logEntries));
+                .SendMessage(new LogEntriesMessage(
+                    monitor.Name,
+                    monitor.Identifier,
+                    logEntries));
         }
     }
 
@@ -71,6 +76,7 @@ namespace AvaloniaLogViewerSpike.Services
         private DateTime _lastWriteTime;
         private long? _previousSize;
 
+        public string Name { get; private set; }
         public Guid Identifier { get; private set; }
         public string LogFilename { get; private set; }
         public bool IsMonitoring { get; set; }
@@ -78,7 +84,7 @@ namespace AvaloniaLogViewerSpike.Services
 
         private LogFileMonitor() { }
 
-        public static LogFileMonitor Create(Guid identifier, string logFilename, Action<object, FileSystemEventArgs> changedOrCreatedAction)
+        public static LogFileMonitor Create(string name, Guid identifier, string logFilename, Action<object, FileSystemEventArgs> changedOrCreatedAction)
         {
             var folder = Path.GetDirectoryName(logFilename);
 
@@ -89,6 +95,7 @@ namespace AvaloniaLogViewerSpike.Services
 
             var monitor = new LogFileMonitor
             {
+                Name = name,
                 Identifier = identifier,
                 LogFilename = logFilename,
                 Watcher = new FileSystemWatcher
@@ -237,6 +244,5 @@ namespace AvaloniaLogViewerSpike.Services
 
             return entries;
         }
-
     }
 }
