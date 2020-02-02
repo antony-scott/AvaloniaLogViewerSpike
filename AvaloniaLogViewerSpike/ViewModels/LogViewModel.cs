@@ -9,42 +9,59 @@ using System.Reactive.Linq;
 
 namespace AvaloniaLogViewerSpike.ViewModels
 {
-    public class LogViewModel : Document//, IActivatableViewModel
+    public class LogViewModel : Document, IActivatableViewModel
     {
         [JsonProperty]
         public string Name { get; set; } = null;
 
-        IObservable<LogEntriesMessage> _logsObserver = MessageBus.Current.Listen<LogEntriesMessage>();
+        IDisposable _messageSubscriber = null;
+        IDisposable _logEntrySubscriber = null;
 
         public ObservableCollection<LogEntryModel> LogEntries { get; } = new ObservableCollection<LogEntryModel>();
 
+        public ViewModelActivator Activator { get; } = new ViewModelActivator();
+
         public LogViewModel()
         {
-            //this
-            //    .WhenAnyValue(x => x.Name)
-            //    .Subscribe(name =>
-            //    {
-            //        _logsObserver = _logsObserver.Where(x => name == null || x.Name == name);
-            //    });
-
-            _logsObserver
-                .Subscribe(logEntriesMessage =>
+            this
+                .WhenActivated(disposables =>
                 {
-                    var observableToo = logEntriesMessage
-                        .LogEntries
-                        .ToObservable()
-                        .ObserveOn(RxApp.MainThreadScheduler);
+                    this.HandleActivation(disposables);
+                });
+        }
 
-                    //observableToo = observableToo
-                    //    .Where(x => x.Severity == "Debug");
+        private void HandleActivation(Action<IDisposable> disposables)
+        {
+            this
+                .WhenAnyValue(x => x.Name)
+                //.WhenAnyValue(x => x.Filters)
+                .Subscribe(name =>
+                {
+                    var observer = MessageBus
+                        .Current
+                        .Listen<LogEntriesMessage>();
 
-                    observableToo
-                        .Subscribe(logEntry =>
+                    if (name != null)
+                    {
+                        observer = observer
+                            .Where(x => x.Name == name);
+                    }
+
+                    _messageSubscriber?.Dispose();
+                    _messageSubscriber = observer
+                        .Subscribe(logEntriesMessage =>
                         {
-                            if (Name == null || logEntriesMessage.Name == Name)
-                            {
-                                LogEntries.Add(logEntry);
-                            }
+                            var logEntriesObserver = logEntriesMessage
+                                .LogEntries
+                                .ToObservable()
+                                .ObserveOn(RxApp.MainThreadScheduler);
+
+                            // TODO: this will change based on filters set in the UI (ie - debug only / message contains "x" / etc)
+                            //logEntriesObserver = logEntriesObserver
+                            //    .Where(x => x.Severity == "Debug");
+
+                            _logEntrySubscriber?.Dispose();
+                            _logEntrySubscriber = logEntriesObserver.Subscribe(LogEntries.Add);
                         });
                 });
         }
