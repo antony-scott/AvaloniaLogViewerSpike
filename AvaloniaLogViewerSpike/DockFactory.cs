@@ -23,7 +23,85 @@ namespace AvaloniaLogViewerSpike
             var document2 = new LogViewModel("Log2") { Id = "Log2", Title = "Log2" };
             var document3 = new LogViewModel() { Id = "AllLogs", Title = "All Logs" };
 
-            var mainLayout = new DocumentDock
+            var mainLayout = new ProportionalDock
+            {
+                Id = "MainLayout",
+                Title = "MainLayout",
+                Proportion = double.NaN,
+                Orientation = Orientation.Horizontal,
+                ActiveDockable = null,
+                VisibleDockables = CreateList<IDockable>
+                (
+                    new ProportionalDock
+                    {
+                        Id = "LeftPane",
+                        Title = "LeftPane",
+                        Proportion = double.NaN,
+                        Orientation = Orientation.Vertical,
+                        ActiveDockable = null,
+                        VisibleDockables = CreateList<IDockable>
+                        (
+                            new ProportionalDock
+                            {
+                                Id = "TopLeftPane",
+                                Title = "TopLeftPane",
+                                Proportion = double.NaN,
+                                Orientation = Orientation.Vertical,
+                                ActiveDockable = null,
+                                VisibleDockables = CreateList<IDockable>
+                                (
+                                    new DocumentDock
+                                    {
+                                        Id = "DocumentsPaneTopLeft",
+                                        Title = "DocumentsPaneTopLeft",
+                                        Proportion = double.NaN,
+                                        ActiveDockable = document1,
+                                        VisibleDockables = CreateList<IDockable>
+                                        (
+                                            document1
+                                        )
+                                    }
+                                )
+                            },
+                            new ProportionalDock
+                            {
+                                Id = "BottomLeftPane",
+                                Title = "BottomLeftPane",
+                                Proportion = double.NaN,
+                                Orientation = Orientation.Vertical,
+                                ActiveDockable = null,
+                                VisibleDockables = CreateList<IDockable>
+                                (
+                                    new DocumentDock
+                                    {
+                                        Id = "DocumentsPaneBottomLeft",
+                                        Title = "DocumentsPaneBottomLeft",
+                                        Proportion = double.NaN,
+                                        ActiveDockable = document2,
+                                        VisibleDockables = CreateList<IDockable>
+                                        (
+                                            document2
+                                        )
+                                    }
+                                )
+                            }
+                        )
+                    },
+                    new DocumentDock
+                    {
+                        Id = "DocumentsPaneRight",
+                        Title = "DocumentsPaneRight",
+                        Proportion = double.NaN,
+                        ActiveDockable = document3,
+                        VisibleDockables = CreateList<IDockable>
+                        (
+                            document3
+                        )
+                    }
+                )
+            };
+
+            var oldMainLayout = new DocumentDock
             {
                 Id = "DocumentsPane",
                 Title = "DocumentsPane",
