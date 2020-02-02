@@ -35,4 +35,7 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\RibbonIcons\" />
+  </ItemGroup>
 </Project>
