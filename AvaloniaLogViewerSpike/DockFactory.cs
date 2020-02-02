@@ -23,7 +23,7 @@ namespace AvaloniaLogViewerSpike
             var document2 = new LogViewModel("Log2") { Id = "Log2", Title = "Log2" };
             var document3 = new LogViewModel() { Id = "AllLogs", Title = "All Logs" };
 
-            var mainLayout = new ProportionalDock
+            var xmainLayout = new ProportionalDock
             {
                 Id = "MainLayout",
                 Title = "MainLayout",
@@ -101,7 +101,7 @@ namespace AvaloniaLogViewerSpike
                 )
             };
 
-            var oldMainLayout = new DocumentDock
+            var mainLayout = new DocumentDock
             {
                 Id = "DocumentsPane",
                 Title = "DocumentsPane",
