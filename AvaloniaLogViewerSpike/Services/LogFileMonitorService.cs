@@ -1,5 +1,5 @@
 ﻿using AvaloniaLogViewerSpike.Messages;
-using AvaloniaLogViewerSpike.Models;
+using AvaloniaLogViewerSpike.ViewModels;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -178,7 +178,7 @@ namespace AvaloniaLogViewerSpike.Services
             return false;
         }
 
-        public IEnumerable<LogEntryModel> GetNewLogEntries(string logfilename = null, int? lastNEntries = null)
+        public IEnumerable<LogEntryViewModel> GetNewLogEntries(string logfilename = null, int? lastNEntries = null)
         {
             var logfile = GetLogFile(logfilename ?? LogFilename);
             if (logfile == null) return null;
@@ -205,7 +205,7 @@ namespace AvaloniaLogViewerSpike.Services
             }
         }
 
-        private IEnumerable<LogEntryModel> Parse(string text, int? lastNEntries = null)
+        private IEnumerable<LogEntryViewModel> Parse(string text, int? lastNEntries = null)
         {
             var lines = Regex
                 .Split(text, "\u001e")
@@ -223,7 +223,7 @@ namespace AvaloniaLogViewerSpike.Services
 
                     if (parts.Length == 1)
                     {
-                        return new LogEntryModel
+                        return new LogEntryViewModel
                         {
                             Message = parts[0]
                         };
@@ -234,7 +234,7 @@ namespace AvaloniaLogViewerSpike.Services
                     var threadId = int.Parse(strThreadId);
                     var severity = parts[2];
 
-                    return new LogEntryModel
+                    return new LogEntryViewModel
                     {
                         Severity = severity,
                         Message = string.Join("\t", parts.Skip(3)),

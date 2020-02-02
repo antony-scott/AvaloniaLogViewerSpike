@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace AvaloniaLogViewerSpike.Models
+namespace AvaloniaLogViewerSpike.ViewModels
 {
-    public class LogEntryModel
+    public class LogEntryViewModel : ViewModelBase
     {
         public DateTime? Timestamp { get; set; }
         public string Severity { get; set; }

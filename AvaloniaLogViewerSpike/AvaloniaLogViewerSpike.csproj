@@ -13,9 +13,11 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Remove="Views\LogEntryView.xaml" />
     <AvaloniaResource Remove="Views\LogView.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Views\LogEntryView.xaml" />
     <None Remove="Views\LogView.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -37,5 +39,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\RibbonIcons\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\LogEntryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

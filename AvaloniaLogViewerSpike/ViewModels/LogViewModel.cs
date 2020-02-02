@@ -1,5 +1,4 @@
 ﻿using AvaloniaLogViewerSpike.Messages;
-using AvaloniaLogViewerSpike.Models;
 using Dock.Model.Controls;
 using Newtonsoft.Json;
 using ReactiveUI;
@@ -17,7 +16,7 @@ namespace AvaloniaLogViewerSpike.ViewModels
         IDisposable _messageSubscriber = null;
         IDisposable _logEntrySubscriber = null;
 
-        public ObservableCollection<LogEntryModel> LogEntries { get; } = new ObservableCollection<LogEntryModel>();
+        public ObservableCollection<LogEntryViewModel> LogEntries { get; } = new ObservableCollection<LogEntryViewModel>();
 
         public ViewModelActivator Activator { get; } = new ViewModelActivator();
 
