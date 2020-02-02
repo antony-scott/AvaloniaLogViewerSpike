@@ -19,9 +19,9 @@ namespace AvaloniaLogViewerSpike
 
         public override IDock CreateLayout()
         {
-            var document1 = new LogViewModel("Log1") { Id = "Log1", Title = "Log1" };
-            var document2 = new LogViewModel("Log2") { Id = "Log2", Title = "Log2" };
-            var document3 = new LogViewModel() { Id = "AllLogs", Title = "All Logs" };
+            var document1 = new LogViewModel { Name = "Log1", Id = "Log1", Title = "Log1" };
+            var document2 = new LogViewModel { Name = "Log2", Id = "Log2", Title = "Log2" };
+            var document3 = new LogViewModel { Id = "AllLogs", Title = "All Logs" };
 
             var xmainLayout = new ProportionalDock
             {

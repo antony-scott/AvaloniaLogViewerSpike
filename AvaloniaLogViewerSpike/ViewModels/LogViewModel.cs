@@ -1,6 +1,7 @@
 ﻿using AvaloniaLogViewerSpike.Messages;
 using AvaloniaLogViewerSpike.Models;
 using Dock.Model.Controls;
+using Newtonsoft.Json;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
@@ -8,27 +9,25 @@ using System.Reactive.Linq;
 
 namespace AvaloniaLogViewerSpike.ViewModels
 {
-    public class LogViewModel : Document
+    public class LogViewModel : Document//, IActivatableViewModel
     {
-        private readonly string _name;
+        [JsonProperty]
+        public string Name { get; set; } = null;
 
-        public ObservableCollection<LogEntryModel> LogEntries { get; }
+        IObservable<LogEntriesMessage> _logsObserver = MessageBus.Current.Listen<LogEntriesMessage>();
 
-        public LogViewModel(string name = null)
+        public ObservableCollection<LogEntryModel> LogEntries { get; } = new ObservableCollection<LogEntryModel>();
+
+        public LogViewModel()
         {
-            _name = name;
-            LogEntries = new ObservableCollection<LogEntryModel>();
+            //this
+            //    .WhenAnyValue(x => x.Name)
+            //    .Subscribe(name =>
+            //    {
+            //        _logsObserver = _logsObserver.Where(x => name == null || x.Name == name);
+            //    });
 
-            var observable = MessageBus
-                .Current
-                .Listen<LogEntriesMessage>();
-
-            if (_name != null)
-            {
-                observable = observable.Where(x => x.Name == _name);
-            }
-
-            observable
+            _logsObserver
                 .Subscribe(logEntriesMessage =>
                 {
                     var observableToo = logEntriesMessage
@@ -42,7 +41,10 @@ namespace AvaloniaLogViewerSpike.ViewModels
                     observableToo
                         .Subscribe(logEntry =>
                         {
-                            LogEntries.Add(logEntry);
+                            if (Name == null || logEntriesMessage.Name == Name)
+                            {
+                                LogEntries.Add(logEntry);
+                            }
                         });
                 });
         }
