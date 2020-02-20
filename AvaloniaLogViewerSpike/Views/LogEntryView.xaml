@@ -6,20 +6,29 @@
              x:Class="AvaloniaLogViewerSpike.Views.LogEntryView">
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto" SharedSizeGroup="A"/>
-      <ColumnDefinition Width="Auto" SharedSizeGroup="B"/>
+      <ColumnDefinition Width="240"/>
+      <ColumnDefinition Width="96"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
     <TextBlock
       Grid.Row="0" Grid.Column="0"
-      Text="{Binding Timestamp, StringFormat=yyyy/MM/dd HH:mm:ss.fff}"
-      Margin="5,0,25,0"/>
+      Text="{Binding Timestamp, StringFormat=\{0:yyyy/MM/dd HH:mm:ss.fff\}}"
+      Margin="5,0,25,0"
+      FontSize="{Binding FontSize, ElementName=UserControl}"
+      FontFamily="{Binding FontFamily, ElementName=UserControl}"
+      Foreground="{Binding Colour}"/>
     <TextBlock
       Grid.Row="0" Grid.Column="1"
       Text="{Binding Severity}"
-      Margin="0,0,20,0"/>
+      Margin="0,0,20,0"
+      FontSize="{Binding FontSize, ElementName=UserControl}"
+      FontFamily="{Binding FontFamily, ElementName=UserControl}"
+      Foreground="{Binding Colour}"/>
     <TextBlock
       Grid.Row="0" Grid.Column="2"
-      Text="{Binding Message}"/>
+      Text="{Binding Message}"
+      FontSize="{Binding FontSize, ElementName=UserControl}"
+      FontFamily="{Binding FontFamily, ElementName=UserControl}"
+      Foreground="{Binding Colour}"/>
   </Grid>
 </UserControl>

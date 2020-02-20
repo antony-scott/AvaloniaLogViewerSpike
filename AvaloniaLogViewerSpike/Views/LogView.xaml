@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:AvaloniaLogViewerSpike.Views"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
-             x:Class="AvaloniaLogViewerSpike.Views.LogView">
+             x:Class="AvaloniaLogViewerSpike.Views.LogView"
+             FontSize="{Binding FontSize}"
+             FontFamily="{Binding FontFamily}">
   <Grid RowDefinitions="*" ColumnDefinitions="*">
     <ListBox Grid.Row="0" Grid.Column="0"
              Name="LogEntries"
@@ -19,7 +21,8 @@
       </ListBox.ItemsPanel>
       <ListBox.ItemTemplate>
         <DataTemplate>
-          <views:LogEntryView />
+          <views:LogEntryView FontSize="{Binding FontSize, ElementName=UserControl}"
+                              FontFamily="{Binding FontFamily, ElementName=UserControl}"/>
         </DataTemplate>
       </ListBox.ItemTemplate>
   </ListBox>
